@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo & Brand */}
@@ -49,16 +49,15 @@ const Navbar: React.FC = () => {
 
           {/* Navigation Links */}
           <div className="hidden md:flex space-x-6">
-            <button onClick={() => navigate("/dashboard")} className="text-gray-700 hover:text-blue-600 transition">Dashboard</button>
-            <button onClick={() => navigate("/learn")} className="text-gray-700 hover:text-blue-600 transition">Learning</button>
-            <button onClick={() => navigate("/jobs")} className="text-gray-700 hover:text-blue-600 transition">Jobs</button>
+            <Link to="/dashboard" className="text-gray-700 hover:text-blue-600 transition duration-150">Dashboard</Link>
+            <Link to="/jobs" className="text-gray-700 hover:text-blue-600 transition duration-150">Jobs</Link>
           </div>
 
           {/* Profile Dropdown */}
           <div className="relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center space-x-2 bg-gray-100 px-3 py-2 rounded-full hover:bg-gray-200 transition"
+              className="flex items-center space-x-2 bg-gray-100 px-3 py-2 rounded-full hover:bg-gray-200 transition duration-150"
             >
               <div className="w-10 h-10 bg-blue-600 text-white flex items-center justify-center rounded-full text-lg font-bold">
                 {getInitials(userName)}
@@ -68,28 +67,28 @@ const Navbar: React.FC = () => {
 
             {/* Dropdown Menu */}
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 border border-gray-200">
-                <div className="px-4 py-2 text-sm text-gray-900">
-                  {userEmail}
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-200">
+                <div className="px-4 py-2 text-xl font-semibold text-gray-900">
+                  {userName}
                 </div>
                 <hr />
-                <button
-                  onClick={() => navigate("/profile")}
-                  className="flex items-center px-4 py-2 w-full text-gray-700 hover:bg-gray-100 transition"
+                <Link
+                  to="/profile"
+                  className="flex items-center px-4 py-2 w-full text-gray-700 hover:bg-gray-100 transition duration-150"
                 >
                   <User className="h-5 w-5 mr-2" />
                   Profile
-                </button>
-                <button
-                  onClick={() => navigate("/my-courses")}
-                  className="flex items-center px-4 py-2 w-full text-gray-700 hover:bg-gray-100 transition"
+                </Link>
+                <Link
+                  to="/my-courses"
+                  className="flex items-center px-4 py-2 w-full text-gray-700 hover:bg-gray-100 transition duration-150"
                 >
                   <BookOpen className="h-5 w-5 mr-2" />
                   My Courses
-                </button>
+                </Link>
                 <button
                   onClick={handleSignOut}
-                  className="flex items-center px-4 py-2 w-full text-red-600 hover:bg-gray-100 transition"
+                  className="flex items-center px-4 py-2 w-full text-red-600 hover:bg-gray-100 transition duration-150"
                 >
                   <LogOut className="h-5 w-5 mr-2" />
                   Sign Out

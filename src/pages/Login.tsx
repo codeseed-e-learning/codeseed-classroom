@@ -8,9 +8,11 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -20,6 +22,8 @@ export default function Login() {
       navigate('/dashboard');
     } catch (error: any) {
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -27,7 +31,7 @@ export default function Login() {
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
-          <GraduationCap className="h-12 w-12 text-black" />
+        <img src="https://codeseed.in/images/logo.png" className='h-20 w-20' alt="codeseed logo" /> 
         </div>
         <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
           Sign in to your account
@@ -75,8 +79,8 @@ export default function Login() {
             </div>
 
             <div>
-              <button type="submit" className="w-full btn-primary">
-                Sign in
+              <button type="submit" className="w-full btn-primary" disabled={loading}>
+                {loading ? 'Logging in...' : 'Sign in'}
               </button>
             </div>
           </form>

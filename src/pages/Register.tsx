@@ -9,17 +9,29 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     setError('');
     setSuccess('');
 
     try {
-      const { error, data } = await supabase.auth.signUp({
+      // Check if the user already exists by attempting to log in
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
+
+      if (!signInError) {
+        setError('User already exists. Try logging in instead.');
+        setLoading(false);
+        return;
+      }
+
+      // If login fails, proceed with registration
+      const { error } = await supabase.auth.signUp({ email, password });
 
       if (error) throw error;
 
@@ -28,14 +40,17 @@ export default function Register() {
       setPassword('');
     } catch (error: any) {
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
-          <GraduationCap className="h-12 w-12 text-black" />
+          <img src="https://codeseed.in/images/logo.png" className='h-20 w-20' alt="codeseed logo" />
         </div>
         <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
           Create your account
@@ -56,13 +71,13 @@ export default function Register() {
               </div>
             )}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
+              <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">
+                First Name
               </label>
               <div className="mt-1">
                 <input
-                  id="email"
-                  type="email"
+                  id="firstname"
+                  type="text"
                   required
                   className="input-field"
                   value={email}
@@ -70,7 +85,6 @@ export default function Register() {
                 />
               </div>
             </div>
-
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
@@ -88,8 +102,8 @@ export default function Register() {
             </div>
 
             <div>
-              <button type="submit" className="w-full btn-primary">
-                Create account
+              <button type="submit" className="w-full btn-primary" disabled={loading}>
+                {loading ? 'Registering...' : 'Create account'}
               </button>
             </div>
           </form>
